@@ -79,10 +79,15 @@ def read_data_files_example(re_assignment_dir):
         collected_data_dir + 'indicators_assignments_df.jsonl',
         lines=True,
     )
+    # all_span_length = np.array(collected_indicator_assignments_df.spans.apply(lambda x: len(x)))
+    # np.sum(all_span_length != 0)
 
     ####################################################################
     ######################### ITERATE SPAN DATA ########################
     ####################################################################
+    all_span_length = np.array(
+        collected_indicator_assignments_df.spans.apply(lambda x: len(x)))
+    sents_with_at_least_one_span = np.sum(all_span_length != 0)
     indicators_overall = []
     indicators_sentence = []
     indicator_spans = []
@@ -92,7 +97,7 @@ def read_data_files_example(re_assignment_dir):
         for span in row.spans:
             curr_indicators.append(span['label'])
             if "start" in span:
-                span_str = row.text_assignments[span["start"]: span["end"]]
+                span_str = row.text[span["start"]: span["end"]]
             else:
                 span_str = "MISSING_TEXT_FOR_" + span['label']
             indicator_spans.append(span_str)
@@ -100,6 +105,7 @@ def read_data_files_example(re_assignment_dir):
         indicators_sentence.extend(list(set(curr_indicators)))
     print("Overall indicator counts", Counter(indicators_overall))
     print("Sentence indicator counts", Counter(indicators_sentence))
+    print("Sentences with at leasrt one indicator", sents_with_at_least_one_span)
     print("Spans associated with indicators")
     pp.pprint(Counter(indicator_spans))
 
