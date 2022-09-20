@@ -2,16 +2,10 @@ import pandas as pd
 import numpy as np
 import argparse
 import sys
-# import glob
 from collections import Counter
 path_to_src = "./"  # noqa
 sys.path.append(path_to_src)  # noqa
-# path_to_src = "./modeling/src/"  # noqa
-# sys.path.append(path_to_src)  # noqa
 import read_annotation_files_utils as utils
-# import data_utils as data_utils
-# import re
-# from importlib import reload
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -67,17 +61,17 @@ def read_data_files_example(re_assignment_dir):
         collected_data_dir + 'all_re_assignments_df.jsonl',
         lines=True
     )  # should be identical to all_re_assignments_df
-    collected_individual_re_assignments = pd.read_json(
-        collected_data_dir + 'individual_re_assignments.jsonl',
-        lines=True
-    )  # should be identical to individual_re_assignments
-    collected_shared_re_assignments = pd.read_json(
-        collected_data_dir + 'shared_re_assignments.jsonl',
-        lines=True
+    # collected_individual_re_assignments = pd.read_json(
+    #     collected_data_dir + 'individual_re_assignments.jsonl',
+    #     lines=True
+    # )  # should be identical to individual_re_assignments
+    # collected_shared_re_assignments = pd.read_json(
+    #     collected_data_dir + 'shared_re_assignments.jsonl',
+    #     lines=True
     )  # should be identical to shared_re_assignments
-    collected_indicator_assignments_df = pd.read_json(
-        collected_data_dir + 'indicators_assignments_df.jsonl',
-        lines=True,
+    collected_indicator_df=pd.read_json(
+        collected_data_dir + 'indicators_df.jsonl',
+        lines = True,
     )
     # all_span_length = np.array(collected_indicator_assignments_df.spans.apply(lambda x: len(x)))
     # np.sum(all_span_length != 0)
@@ -85,13 +79,13 @@ def read_data_files_example(re_assignment_dir):
     ####################################################################
     ######################### ITERATE SPAN DATA ########################
     ####################################################################
-    all_span_length = np.array(
-        collected_indicator_assignments_df.spans.apply(lambda x: len(x)))
+    all_span_length=np.array(
+        collected_indicator_df.spans.apply(lambda x: len(x)))
     sents_with_at_least_one_span = np.sum(all_span_length != 0)
     indicators_overall = []
     indicators_sentence = []
     indicator_spans = []
-    for idx, row in collected_indicator_assignments_df.iterrows():
+    for idx, row in collected_indicator_df.iterrows():
         curr_indicators = []
         # Each row contains a list of dictionaries with span data
         for span in row.spans:
@@ -108,23 +102,23 @@ def read_data_files_example(re_assignment_dir):
     print("Sentences with at leasrt one indicator", sents_with_at_least_one_span)
     print("Spans associated with indicators")
     pp.pprint(Counter(indicator_spans))
-
+#
 # re_assignment_dir = 'dataSaves/raw_race_ethnicity_assignment_annotations/'
 # collected_data_dir = 'dataSaves/collected_data/'
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Collects indicator and assignment annotations to one file.')
+        description = 'Collects indicator and assignment annotations to one file.')
     parser.add_argument('-ra', '--race_assignemt_dir',
-                        help='Folder to read RE assignments')
+                        help = 'Folder to read RE assignments')
     parser.add_argument('-cd', '--collected_data_dir',
-                        help='Path to the collected data folder.')
+                        help = 'Path to the collected data folder.')
 
-    args = parser.parse_args()
+    args=parser.parse_args()
     collect_indicator_assignment_annotations_together(
-        re_assignment_dir=args.race_assignemt_dir,
-        collected_data_dir=args.collected_data_dir,
+        re_assignment_dir = args.race_assignemt_dir,
+        collected_data_dir = args.collected_data_dir,
     )
 
 
