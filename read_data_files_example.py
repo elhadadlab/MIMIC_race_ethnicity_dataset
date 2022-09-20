@@ -10,7 +10,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 
-def read_data_files_example(re_assignment_dir):
+def read_data_files_example(re_assignment_dir, collected_data_dir):
     """
     Description: A function to show how to read in the race and ethnicity indicator and assignment
         annotation files.
@@ -61,25 +61,15 @@ def read_data_files_example(re_assignment_dir):
         collected_data_dir + 'all_re_assignments_df.jsonl',
         lines=True
     )  # should be identical to all_re_assignments_df
-    # collected_individual_re_assignments = pd.read_json(
-    #     collected_data_dir + 'individual_re_assignments.jsonl',
-    #     lines=True
-    # )  # should be identical to individual_re_assignments
-    # collected_shared_re_assignments = pd.read_json(
-    #     collected_data_dir + 'shared_re_assignments.jsonl',
-    #     lines=True
-    )  # should be identical to shared_re_assignments
-    collected_indicator_df=pd.read_json(
+    collected_indicator_df = pd.read_json(
         collected_data_dir + 'indicators_df.jsonl',
-        lines = True,
+        lines=True,
     )
-    # all_span_length = np.array(collected_indicator_assignments_df.spans.apply(lambda x: len(x)))
-    # np.sum(all_span_length != 0)
 
     ####################################################################
     ######################### ITERATE SPAN DATA ########################
     ####################################################################
-    all_span_length=np.array(
+    all_span_length = np.array(
         collected_indicator_df.spans.apply(lambda x: len(x)))
     sents_with_at_least_one_span = np.sum(all_span_length != 0)
     indicators_overall = []
@@ -109,16 +99,16 @@ def read_data_files_example(re_assignment_dir):
 
 def main():
     parser = argparse.ArgumentParser(
-        description = 'Collects indicator and assignment annotations to one file.')
+        description='Collects indicator and assignment annotations to one file.')
     parser.add_argument('-ra', '--race_assignemt_dir',
-                        help = 'Folder to read RE assignments')
+                        help='Folder to read RE assignments')
     parser.add_argument('-cd', '--collected_data_dir',
-                        help = 'Path to the collected data folder.')
+                        help='Path to the collected data folder.')
 
-    args=parser.parse_args()
-    collect_indicator_assignment_annotations_together(
-        re_assignment_dir = args.race_assignemt_dir,
-        collected_data_dir = args.collected_data_dir,
+    args = parser.parse_args()
+    read_data_files_example(
+        re_assignment_dir=args.race_assignemt_dir,
+        collected_data_dir=args.collected_data_dir,
     )
 
 
