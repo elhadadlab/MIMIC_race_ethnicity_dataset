@@ -1,0 +1,9 @@
+name: temp_delete
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - ipython
+  - pandas
+  - openpyxl
+prefix: /home/oliver/anaconda3/envs/temp_delete
